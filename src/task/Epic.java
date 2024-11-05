@@ -18,12 +18,12 @@ public class Epic extends Task {
         subtaskList.add(subtask);
     }
 
-    public ArrayList<Subtask> getSubtaskList() {
-        return subtaskList;
+    public  ArrayList<Subtask> getSubtaskList() {
+        return subtaskList;     // Не совсем понял пункт по поводу доступа к этой переменной
     }
 
-    public void setSubtaskList(ArrayList<Subtask> subtaskList) {
-        this.subtaskList = subtaskList;
+    public void removeSubtask(Subtask subtask) {
+        subtaskList.remove(subtask);
     }
 
     public void clearSubtasks() {
