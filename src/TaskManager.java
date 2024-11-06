@@ -66,7 +66,6 @@ public class TaskManager {
         Epic oldEpic = epics.get(epicId);
         oldEpic.setName(epic.getName());
         oldEpic.setDescription(epic.getDescription());
-        updateEpicsStatus(epic);
         return epic;
     }
 
@@ -99,7 +98,11 @@ public class TaskManager {
     }
 
     public ArrayList<Subtask> getEpicSubtasks(int id) {
-        return epics.get(id).getSubtaskList();
+        Epic epic = epics.get(id);
+        if (epic == null) {
+            return null;
+        }
+        return epic.getSubtaskList();
     }
 
     // Получение по идентификатору
@@ -140,6 +143,7 @@ public class TaskManager {
         subtasks.remove(id);
         Epic epic = epics.get(epicId);
         epic.removeSubtask(subtask);
+        updateEpicsStatus(epic);
     }
 
     // Удаление всех задач

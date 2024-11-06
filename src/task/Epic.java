@@ -7,7 +7,7 @@ public class Epic extends Task {
     private ArrayList<Subtask> subtaskList = new ArrayList<>();
 
     public Epic(String name, String description) {
-        super(name, description);
+        super(name, description,TaskStatus.NEW);
     }
 
     public Epic(String name, String description, int id, TaskStatus status) {
@@ -19,7 +19,7 @@ public class Epic extends Task {
     }
 
     public  ArrayList<Subtask> getSubtaskList() {
-        return subtaskList;     // Не совсем понял пункт по поводу доступа к этой переменной
+        return new ArrayList<>(subtaskList);
     }
 
     public void removeSubtask(Subtask subtask) {
