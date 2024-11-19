@@ -12,8 +12,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (history.size() == 10) {
             history.removeFirst();
-            history.add(task);
-            return;
         }
         history.add(task);
 
@@ -22,7 +20,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     // Получение истории просмотров
     @Override
     public List<Task> getHistory() {
-        return history;
+        return new ArrayList<>(history);
     }
 
 }

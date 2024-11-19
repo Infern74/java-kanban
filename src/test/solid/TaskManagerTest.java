@@ -67,12 +67,12 @@ class TaskManagerTest {
     void testSubtaskEqualityById() {
 
         Epic epic1 = new Epic("Epic1", "description");
-        manager.addTask(epic1);
+        manager.addEpic(epic1);
 
         Subtask subtask1 = new Subtask("Subtask1", "description", TaskStatus.NEW, epic1.getId());
 
         manager.addSubtask(subtask1);
-        assertEquals(subtask1, manager.getSubtaskByID(subtask1.getId())); // Не понимаю почему возращается null
+        assertEquals(subtask1, manager.getSubtaskByID(subtask1.getId()));
 
     }
 

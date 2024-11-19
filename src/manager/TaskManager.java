@@ -2,7 +2,6 @@ package manager;
 
 import tasks.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -21,13 +20,13 @@ public interface TaskManager {
     Subtask updateSubtask(Subtask subtask);
 
     // Get List
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
 
-    ArrayList<Subtask> getEpicSubtasks(int id);
+    List<Subtask> getEpicSubtasks(int id);
 
     // Get by ID
     Task getTaskByID(int id);
@@ -52,8 +51,5 @@ public interface TaskManager {
 
     // History
     List<Task> getHistory();
-
-    // updateEpicsStatus
-    void updateEpicsStatus(Epic epic);
 
 }
