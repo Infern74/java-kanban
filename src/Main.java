@@ -1,7 +1,11 @@
-import manager.*;
-import tasks.*;
+import manager.Managers;
+import manager.TaskManager;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+import tasks.TaskStatus;
 
-public static void main(String[] args) {
+public static void main() {
 
     TaskManager manager = Managers.getDefault();
 
@@ -51,3 +55,4 @@ public static void main(String[] args) {
     manager.removeEpicByID(epic1.getId());
     System.out.println(manager.getHistory());
 }
+
