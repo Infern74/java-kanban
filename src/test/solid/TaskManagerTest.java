@@ -105,9 +105,9 @@ class TaskManagerTest {
         manager.addTask(checkTask);
         manager.getTaskByID(checkTask.getId());
         Task testTask = new Task("Task1", "description", checkTask.getId(), TaskStatus.IN_PROGRESS);
-        manager.updateTask(checkTask);
+        manager.updateTask(testTask);
         manager.getTaskByID(checkTask.getId());
-        assertEquals(checkTask, manager.getHistory().getFirst());
+        assertEquals(testTask, manager.getHistory().getFirst());
 
     }
 
@@ -188,7 +188,7 @@ class TaskManagerTest {
         manager.addSubtask(subtask1);
 
         manager.removeSubtaskByID(subtask.getId());
-        for(Subtask elem : epic.getSubtaskList()) {
+        for (Subtask elem : epic.getSubtaskList()) {
             assertNotEquals(elem.getId(), subtask.getId());
         }
     }
