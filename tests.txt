@@ -1,3 +1,0 @@
-./src/test/solid/HistoryManagerTest.java
-./src/test/solid/ManagersTest.java
-./src/test/solid/TaskManagerTest.java
