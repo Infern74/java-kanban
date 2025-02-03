@@ -57,6 +57,7 @@ public class Main {
         manager.removeEpicByID(epic1.getId());
         System.out.println(manager.getHistory());
     }
+
     public static String[] args;
 }
 
