@@ -31,23 +31,23 @@ public static void main(String[] args) {
     manager.getEpicByID(epic2.getId());
     System.out.println(manager.getHistory());
 
-    System.out.println("\nЗапрос subtask2, task1, epic1:");
+    System.out.println("Запрос subtask2, task1, epic1:");
     manager.getSubtaskByID(subtask2.getId());
     manager.getTaskByID(task1.getId());
     manager.getEpicByID(epic1.getId());
     System.out.println(manager.getHistory());
 
-    System.out.println("\nЗапрос subtask3, epic2, task2:");
+    System.out.println("Запрос subtask3, epic2, task2:");
     manager.getSubtaskByID(subtask3.getId());
     manager.getEpicByID(epic2.getId());
     manager.getTaskByID(task2.getId());
     System.out.println(manager.getHistory());
 
-    System.out.println("\nУдаляем task1:");
+    System.out.println("Удаляем task1:");
     manager.removeTaskByID(task1.getId());
     System.out.println(manager.getHistory());
 
-    System.out.println("\nУдаляем epic1:");
+    System.out.println("Удаляем epic1:");
     manager.removeEpicByID(epic1.getId());
     System.out.println(manager.getHistory());
 }
