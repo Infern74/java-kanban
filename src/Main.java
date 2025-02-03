@@ -47,7 +47,6 @@ public static void main(String[] args) {
     manager.removeTaskByID(task1.getId());
     System.out.println(manager.getHistory());
 
-    // Удаляем эпик с тремя подзадачами (epic1)
     System.out.println("\nУдаляем epic1:");
     manager.removeEpicByID(epic1.getId());
     System.out.println(manager.getHistory());
