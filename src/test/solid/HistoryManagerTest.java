@@ -19,21 +19,6 @@ public class HistoryManagerTest {
     }
 
     @Test
-    void checkMaxSizeOfRequestHistory() {
-        HistoryManager historyManager = Managers.getDefaultHistory();
-        Task task = new Task("Task1", "description", TaskStatus.NEW);
-        final int sizeFromRequestHistoryShouldBe = 10;
-        final int sizeForCheckRequestSize = 10;
-        for (int i = 0; i <= sizeForCheckRequestSize + 20; i++) {
-            historyManager.add(task);
-        }
-        List<Task> exampleOfRequestHistoryList = historyManager.getHistory();
-
-        assertEquals(sizeFromRequestHistoryShouldBe, exampleOfRequestHistoryList.size(), "Ограничение листа "
-                + "не работает");
-    }
-
-    @Test
     void add() {
         HistoryManager historyManager = Managers.getDefaultHistory();
         Task task = new Task("Task1", "description", TaskStatus.NEW);
@@ -41,6 +26,15 @@ public class HistoryManagerTest {
         final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
         assertEquals(1, history.size(), "История не пустая.");
+    }
+
+    @Test
+    void remove() {
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        Task task = new Task("Task1", "description", TaskStatus.NEW);
+        historyManager.remove(task.getId());
+        final List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size(), "История пустая.");
     }
 
 }

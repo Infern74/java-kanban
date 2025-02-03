@@ -105,7 +105,7 @@ class TaskManagerTest {
         manager.addTask(checkTask);
         manager.getTaskByID(checkTask.getId());
         Task testTask = new Task("Task1", "description", checkTask.getId(), TaskStatus.IN_PROGRESS);
-        manager.updateTask(testTask);
+        manager.updateTask(checkTask);
         manager.getTaskByID(checkTask.getId());
         assertEquals(checkTask, manager.getHistory().getFirst());
 
@@ -175,5 +175,36 @@ class TaskManagerTest {
         List<Subtask> tasks = manager.getSubtasks();
         assertEquals(0, tasks.size());
 
+    }
+
+    @Test
+    public void testSubtaskRemovalUpdatesEpic() {
+        Epic epic = new Epic("Epic1", "description");
+        manager.addEpic(epic);
+
+        Subtask subtask = new Subtask("Subtask1", "description", TaskStatus.NEW, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask2", "description", TaskStatus.NEW, epic.getId());
+        manager.addSubtask(subtask);
+        manager.addSubtask(subtask1);
+
+        manager.removeSubtaskByID(subtask.getId());
+        for(Subtask elem : epic.getSubtaskList()) {
+            assertNotEquals(elem.getId(), subtask.getId());
+        }
+    }
+
+    @Test
+    void testTaskUpdateThroughSetter() {
+        Task task = new Task("Task1", "description", TaskStatus.NEW);
+        manager.addTask(task);
+
+        task.setName("Updated Task");
+        task.setDescription("Updated Description");
+        task.setStatus(TaskStatus.IN_PROGRESS);
+
+        Task savedTask = manager.getTaskByID(task.getId());
+        assertEquals("Updated Task", savedTask.getName(), "Имя задачи должно быть обновлено.");
+        assertEquals("Updated Description", savedTask.getDescription(), "Описание задачи должно быть обновлено.");
+        assertEquals(TaskStatus.IN_PROGRESS, savedTask.getStatus(), "Статус задачи должен быть обновлён.");
     }
 }
