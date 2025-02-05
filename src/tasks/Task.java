@@ -19,7 +19,7 @@ public class Task {
         this.id = id;
         this.status = status;
     }
-    
+
     public String getName() {
         return name;
     }
