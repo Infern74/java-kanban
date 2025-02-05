@@ -10,7 +10,9 @@ public class InMemoryHistoryManager implements HistoryManager {
     // Добавление нового просмотра задачи в историю
     @Override
     public void add(Task task) {
-        historiesList.linkLast(task);
+        if (task != null) {
+            historiesList.linkLast(task);
+        }
     }
 
     // Получение истории просмотров
