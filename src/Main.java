@@ -1,61 +1,113 @@
-import manager.Managers;
-import manager.TaskManager;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
-import tasks.TaskStatus;
+import manager.*;
+import tasks.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Main.args = args;
+        // Создаём временный файл для тестов
+        File file = File.createTempFile("tasks", ".csv");
+        System.out.println("Файл для тестов создан: " + file.getAbsolutePath());
 
-        TaskManager manager = Managers.getDefault();
+        // Создаём менеджер и добавляем задачи
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
 
+        // Создаём задачи
         Task task1 = new Task("Task 1", "Описание задачи 1", TaskStatus.NEW);
-        Task task2 = new Task("Task 2", "Описание задачи 2", TaskStatus.NEW);
         manager.addTask(task1);
-        manager.addTask(task2);
 
         Epic epic1 = new Epic("Epic 1", "Описание эпика 1");
         manager.addEpic(epic1);
 
         Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи 1", TaskStatus.NEW, epic1.getId());
-        Subtask subtask2 = new Subtask("Subtask 2", "Описание подзадачи 2", TaskStatus.NEW, epic1.getId());
-        Subtask subtask3 = new Subtask("Subtask 3", "Описание подзадачи 3", TaskStatus.NEW, epic1.getId());
         manager.addSubtask(subtask1);
-        manager.addSubtask(subtask2);
-        manager.addSubtask(subtask3);
 
-        Epic epic2 = new Epic("Epic 2", "Описание эпика 2");
-        manager.addEpic(epic2);
+        // Сохраняем задачи в файл
+        manager.save();
+        System.out.println("Задачи сохранены в файл.");
 
-        System.out.println("Запрос task1, epic1, subtask1, task2, epic2:");
-        manager.getTaskByID(task1.getId());
-        manager.getEpicByID(epic1.getId());
-        manager.getSubtaskByID(subtask1.getId());
-        manager.getTaskByID(task2.getId());
-        manager.getEpicByID(epic2.getId());
-        System.out.println(manager.getHistory());
+        // Загружаем задачи из файла
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
+        System.out.println("Задачи загружены из файла.");
 
-        System.out.println("Запрос subtask2, task1, epic1:");
-        manager.getSubtaskByID(subtask2.getId());
-        manager.getTaskByID(task1.getId());
-        manager.getEpicByID(epic1.getId());
-        System.out.println(manager.getHistory());
+        // Проверяем, что задачи загружены корректно
+        System.out.println("\nПроверка загруженных задач:");
 
-        System.out.println("Запрос subtask3, epic2, task2:");
-        manager.getSubtaskByID(subtask3.getId());
-        manager.getEpicByID(epic2.getId());
-        manager.getTaskByID(task2.getId());
-        System.out.println(manager.getHistory());
+        // Проверяем задачу
+        ArrayList<Task> loadedTasks = loadedManager.getTasks();
+        for (Task task : loadedTasks) {
+            System.out.println("Задача: " + task.getName() + " (ID: " + task.getId() + ")");
+            System.out.println("Описание: " + task.getDescription());
+            System.out.println("Статус: " + task.getStatus());
+        }
 
-        System.out.println("Удаляем task1:");
-        manager.removeTaskByID(task1.getId());
-        System.out.println(manager.getHistory());
+        // Проверяем эпик
+        ArrayList<Epic> loadedEpics = loadedManager.getEpics();
+        for (Epic epic : loadedEpics) {
+            System.out.println("\nЭпик: " + epic.getName() + " (ID: " + epic.getId() + ")");
+            System.out.println("Описание: " + epic.getDescription());
+            System.out.println("Статус: " + epic.getStatus());
 
-        System.out.println("Удаляем epic1:");
-        manager.removeEpicByID(epic1.getId());
-        System.out.println(manager.getHistory());
+        }
+
+        // Проверяем подзадачу
+        ArrayList<Subtask> loadedSubtasks = loadedManager.getSubtasks();
+        for (Subtask subtask : loadedSubtasks) {
+            System.out.println("\nПодзадача 1: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
+            System.out.println("Описание: " + subtask.getDescription());
+            System.out.println("Статус: " + subtask.getStatus());
+            System.out.println("ID эпика: " + subtask.getEpicId());
+        }
+
+        // Проверяем, что подзадача связана с эпиком
+        System.out.println("\nПодзадачи эпика 1:");
+        for (Epic epic : loadedEpics) {
+            for (Subtask subtask : loadedManager.getEpicSubtasks(epic.getId())) {
+                System.out.println("- " + subtask.getName() + " (ID: " + subtask.getId() + ")");
+            }
+        }
+
+        // Проверка
+        FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(file);
+        System.out.println("---------------------------------------------");
+
+        // Проверяем задачу
+        ArrayList<Task> loadedTasks2 = loadedManager2.getTasks();
+        for (Task task : loadedTasks2) {
+            System.out.println("Задача: " + task.getName() + " (ID: " + task.getId() + ")");
+            System.out.println("Описание: " + task.getDescription());
+            System.out.println("Статус: " + task.getStatus());
+        }
+
+        // Проверяем эпик
+        ArrayList<Epic> loadedEpics2 = loadedManager2.getEpics();
+        for (Epic epic : loadedEpics2) {
+            System.out.println("\nЭпик: " + epic.getName() + " (ID: " + epic.getId() + ")");
+            System.out.println("Описание: " + epic.getDescription());
+            System.out.println("Статус: " + epic.getStatus());
+
+        }
+
+        // Проверяем подзадачу
+        ArrayList<Subtask> loadedSubtasks2 = loadedManager2.getSubtasks();
+        for (Subtask subtask : loadedSubtasks2) {
+            System.out.println("\nПодзадача 1: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
+            System.out.println("Описание: " + subtask.getDescription());
+            System.out.println("Статус: " + subtask.getStatus());
+            System.out.println("ID эпика: " + subtask.getEpicId());
+        }
+
+        // Проверяем, что подзадача связана с эпиком
+        System.out.println("\nПодзадачи эпика 1:");
+        for (Epic epic : loadedEpics2) {
+            for (Subtask subtask : loadedManager2.getEpicSubtasks(epic.getId())) {
+                System.out.println("- " + subtask.getName() + " (ID: " + subtask.getId() + ")");
+            }
+        }
+
     }
 
     public static String[] args;
