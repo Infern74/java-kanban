@@ -72,7 +72,7 @@ public class Main {
 
 
         FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(file);
-        System.out.println("---------------------------------------------");
+        System.out.println("--------------------------------------------");
 
 
         ArrayList<Task> loadedTasks2 = loadedManager2.getTasks();
