@@ -93,9 +93,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    public void save() {
+    private void save() {
         try {
             StringBuilder sb = new StringBuilder();
+            sb.append("id,type,name,status,description,epic\n");
 
             for (Task task : getTasks()) {
                 sb.append(taskToString(task)).append("\n");
@@ -138,20 +139,30 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         try {
             String content = Files.readString(file.toPath());
-            String[] lines = content.split("\n");
             if (content.isEmpty()) {
                 throw new ManagerSaveException("Файл пуст");
             }
-            for (String line : lines) {
-                Task task = manager.fromString(line);
+            String[] lines = content.split("\n");
+            int maxId = 0;
+
+            for (int i = 1; i < lines.length; i++) {
+                Task task = manager.fromString(lines[i]);
+
+                if (task.getId() > maxId) {
+                    maxId = task.getId();
+                }
+
                 if (task instanceof Epic) {
-                    manager.addEpic((Epic) task); // Используем метод addEpic
+                    manager.addEpicFromFile((Epic) task);
                 } else if (task instanceof Subtask) {
-                    manager.addSubtask((Subtask) task); // Используем метод addSubtask
+                    manager.addSubtaskFromFile((Subtask) task);
                 } else {
-                    manager.addTask(task); // Используем метод addTask
+                    manager.addTaskFromFile(task);
                 }
             }
+
+            manager.updateNextId(maxId);
+
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка загрузки файла", e);
         }

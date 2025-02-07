@@ -25,10 +25,7 @@ public class Main {
         Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи 1", TaskStatus.NEW, epic1.getId());
         manager.addSubtask(subtask1);
 
-
-        manager.save();
         System.out.println("Задачи сохранены в файл.");
-
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
         System.out.println("Задачи загружены из файла.");
@@ -56,15 +53,16 @@ public class Main {
 
         ArrayList<Subtask> loadedSubtasks = loadedManager.getSubtasks();
         for (Subtask subtask : loadedSubtasks) {
-            System.out.println("\nПодзадача 1: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
+            System.out.println("\nПодзадача: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
             System.out.println("Описание: " + subtask.getDescription());
             System.out.println("Статус: " + subtask.getStatus());
             System.out.println("ID эпика: " + subtask.getEpicId());
         }
 
 
-        System.out.println("\nПодзадачи эпика 1:");
+        System.out.println("\nПодзадачи эпика :");
         for (Epic epic : loadedEpics) {
+            System.out.println(epic.getName() + " (ID: " + epic.getId() + ")");
             for (Subtask subtask : loadedManager.getEpicSubtasks(epic.getId())) {
                 System.out.println("- " + subtask.getName() + " (ID: " + subtask.getId() + ")");
             }
@@ -94,15 +92,16 @@ public class Main {
 
         ArrayList<Subtask> loadedSubtasks2 = loadedManager2.getSubtasks();
         for (Subtask subtask : loadedSubtasks2) {
-            System.out.println("\nПодзадача 1: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
+            System.out.println("\nПодзадача: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
             System.out.println("Описание: " + subtask.getDescription());
             System.out.println("Статус: " + subtask.getStatus());
             System.out.println("ID эпика: " + subtask.getEpicId());
         }
 
 
-        System.out.println("\nПодзадачи эпика 1:");
+        System.out.println("\nПодзадачи эпика:");
         for (Epic epic : loadedEpics2) {
+            System.out.println(epic.getName() + " (ID: " + epic.getId() + ")");
             for (Subtask subtask : loadedManager2.getEpicSubtasks(epic.getId())) {
                 System.out.println("- " + subtask.getName() + " (ID: " + subtask.getId() + ")");
             }
