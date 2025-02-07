@@ -8,14 +8,14 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws IOException {
         Main.args = args;
-        // Создаём временный файл для тестов
+
         File file = File.createTempFile("tasks", ".csv");
         System.out.println("Файл для тестов создан: " + file.getAbsolutePath());
 
-        // Создаём менеджер и добавляем задачи
+
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
 
-        // Создаём задачи
+
         Task task1 = new Task("Task 1", "Описание задачи 1", TaskStatus.NEW);
         manager.addTask(task1);
 
@@ -25,18 +25,18 @@ public class Main {
         Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи 1", TaskStatus.NEW, epic1.getId());
         manager.addSubtask(subtask1);
 
-        // Сохраняем задачи в файл
+
         manager.save();
         System.out.println("Задачи сохранены в файл.");
 
-        // Загружаем задачи из файла
+
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
         System.out.println("Задачи загружены из файла.");
 
-        // Проверяем, что задачи загружены корректно
+
         System.out.println("\nПроверка загруженных задач:");
 
-        // Проверяем задачу
+
         ArrayList<Task> loadedTasks = loadedManager.getTasks();
         for (Task task : loadedTasks) {
             System.out.println("Задача: " + task.getName() + " (ID: " + task.getId() + ")");
@@ -44,7 +44,7 @@ public class Main {
             System.out.println("Статус: " + task.getStatus());
         }
 
-        // Проверяем эпик
+
         ArrayList<Epic> loadedEpics = loadedManager.getEpics();
         for (Epic epic : loadedEpics) {
             System.out.println("\nЭпик: " + epic.getName() + " (ID: " + epic.getId() + ")");
@@ -53,7 +53,7 @@ public class Main {
 
         }
 
-        // Проверяем подзадачу
+
         ArrayList<Subtask> loadedSubtasks = loadedManager.getSubtasks();
         for (Subtask subtask : loadedSubtasks) {
             System.out.println("\nПодзадача 1: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
@@ -62,7 +62,7 @@ public class Main {
             System.out.println("ID эпика: " + subtask.getEpicId());
         }
 
-        // Проверяем, что подзадача связана с эпиком
+
         System.out.println("\nПодзадачи эпика 1:");
         for (Epic epic : loadedEpics) {
             for (Subtask subtask : loadedManager.getEpicSubtasks(epic.getId())) {
@@ -70,11 +70,11 @@ public class Main {
             }
         }
 
-        // Проверка
+
         FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(file);
         System.out.println("---------------------------------------------");
 
-        // Проверяем задачу
+
         ArrayList<Task> loadedTasks2 = loadedManager2.getTasks();
         for (Task task : loadedTasks2) {
             System.out.println("Задача: " + task.getName() + " (ID: " + task.getId() + ")");
@@ -82,7 +82,7 @@ public class Main {
             System.out.println("Статус: " + task.getStatus());
         }
 
-        // Проверяем эпик
+
         ArrayList<Epic> loadedEpics2 = loadedManager2.getEpics();
         for (Epic epic : loadedEpics2) {
             System.out.println("\nЭпик: " + epic.getName() + " (ID: " + epic.getId() + ")");
@@ -91,7 +91,7 @@ public class Main {
 
         }
 
-        // Проверяем подзадачу
+
         ArrayList<Subtask> loadedSubtasks2 = loadedManager2.getSubtasks();
         for (Subtask subtask : loadedSubtasks2) {
             System.out.println("\nПодзадача 1: " + subtask.getName() + " (ID: " + subtask.getId() + ")");
@@ -100,7 +100,7 @@ public class Main {
             System.out.println("ID эпика: " + subtask.getEpicId());
         }
 
-        // Проверяем, что подзадача связана с эпиком
+
         System.out.println("\nПодзадачи эпика 1:");
         for (Epic epic : loadedEpics2) {
             for (Subtask subtask : loadedManager2.getEpicSubtasks(epic.getId())) {
