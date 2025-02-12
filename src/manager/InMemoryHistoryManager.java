@@ -7,7 +7,6 @@ import java.util.*;
 public class InMemoryHistoryManager implements HistoryManager {
     private final MyLinkedList historiesList = new MyLinkedList();
 
-    // Добавление нового просмотра задачи в историю
     @Override
     public void add(Task task) {
         if (task != null) {
@@ -15,7 +14,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    // Получение истории просмотров
     @Override
     public List<Task> getHistory() {
         return historiesList.getTasks();
