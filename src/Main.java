@@ -4,8 +4,6 @@ import tasks.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -18,13 +16,13 @@ public class Main {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
 
 
-        Task task1 = new Task("Task 1", "Описание задачи 1", TaskStatus.NEW, Duration.ofMinutes(20), LocalDateTime.of(2025, 2, 12, 10, 0));
+        Task task1 = new Task("Task 1", "Описание задачи 1", TaskStatus.NEW);
         manager.addTask(task1);
 
         Epic epic1 = new Epic("Epic 1", "Описание эпика 1");
         manager.addEpic(epic1);
 
-        Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи 1", TaskStatus.NEW, epic1.getId(), Duration.ofMinutes(90), LocalDateTime.of(2025, 2, 13, 14, 25));
+        Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи 1", TaskStatus.NEW, epic1.getId());
         manager.addSubtask(subtask1);
 
         System.out.println("Задачи сохранены в файл.");
@@ -41,8 +39,6 @@ public class Main {
             System.out.println("Задача: " + task.getName() + " (ID: " + task.getId() + ")");
             System.out.println("Описание: " + task.getDescription());
             System.out.println("Статус: " + task.getStatus());
-            System.out.println("Длительность: " + task.getDuration());
-            System.out.println("Начало: " + task.getStartTime());
         }
 
 
@@ -51,8 +47,6 @@ public class Main {
             System.out.println("\nЭпик: " + epic.getName() + " (ID: " + epic.getId() + ")");
             System.out.println("Описание: " + epic.getDescription());
             System.out.println("Статус: " + epic.getStatus());
-            System.out.println("Длительность: " + epic.getDuration());
-            System.out.println("Начало: " + epic.getStartTime());
 
         }
 
@@ -63,8 +57,6 @@ public class Main {
             System.out.println("Описание: " + subtask.getDescription());
             System.out.println("Статус: " + subtask.getStatus());
             System.out.println("ID эпика: " + subtask.getEpicId());
-            System.out.println("Длительность: " + subtask.getDuration());
-            System.out.println("Начало: " + subtask.getStartTime());
         }
 
 
@@ -86,8 +78,6 @@ public class Main {
             System.out.println("Задача: " + task.getName() + " (ID: " + task.getId() + ")");
             System.out.println("Описание: " + task.getDescription());
             System.out.println("Статус: " + task.getStatus());
-            System.out.println("Длительность: " + task.getDuration());
-            System.out.println("Начало: " + task.getStartTime());
         }
 
 
@@ -96,8 +86,6 @@ public class Main {
             System.out.println("\nЭпик: " + epic.getName() + " (ID: " + epic.getId() + ")");
             System.out.println("Описание: " + epic.getDescription());
             System.out.println("Статус: " + epic.getStatus());
-            System.out.println("Длительность: " + epic.getDuration());
-            System.out.println("Начало: " + epic.getStartTime());
 
         }
 
@@ -108,8 +96,6 @@ public class Main {
             System.out.println("Описание: " + subtask.getDescription());
             System.out.println("Статус: " + subtask.getStatus());
             System.out.println("ID эпика: " + subtask.getEpicId());
-            System.out.println("Длительность: " + subtask.getDuration());
-            System.out.println("Начало: " + subtask.getStartTime());
         }
 
 
