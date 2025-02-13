@@ -83,6 +83,9 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
         Task oldTask = tasks.get(taskId);
+        if (task.getStartTime() != null && isTaskOverlapping(task)) {
+            throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
+        }
         if (oldTask.getStartTime() != null) {
             prioritizedTasks.remove(oldTask);
         }
@@ -112,6 +115,9 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask oldSubtask = subtasks.get(subtaskId);
         if (!subtasks.containsKey(subtaskId) || oldSubtask.getEpicId() != epicId) {
             return null;
+        }
+        if (subtask.getStartTime() != null && isTaskOverlapping(subtask)) {
+            throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
         }
         if (oldSubtask.getStartTime() != null) {
             prioritizedTasks.remove(oldSubtask);
@@ -188,6 +194,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getSubtaskList().forEach(subtask -> {
             subtasks.remove(subtask.getId());
             historyManager.remove(subtask.getId());
+            prioritizedTasks.remove(subtask);
         });
         historyManager.remove(id);
         epics.remove(id);
@@ -213,9 +220,10 @@ public class InMemoryTaskManager implements TaskManager {
     // deleteAll
     @Override
     public void deleteTasks() {
-        for (Integer taskId : tasks.keySet()) {
-            historyManager.remove(taskId);
-        }
+        tasks.values().forEach(task -> {
+            historyManager.remove(task.getId());
+            prioritizedTasks.remove(task);
+        });
         tasks.clear();
     }
 
@@ -234,7 +242,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtasks() {
-        subtasks.keySet().forEach(historyManager::remove);
+        subtasks.values().forEach(subtask -> {
+            historyManager.remove(subtask.getId());
+            prioritizedTasks.remove(subtask);
+        });
         subtasks.clear();
         epics.values().forEach(epic -> {
             epic.clearSubtasks();

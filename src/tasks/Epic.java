@@ -49,6 +49,7 @@ public class Epic extends Task {
         if (subtaskList.isEmpty()) {
             setDuration(Duration.ZERO);
             setStartTime(null);
+            setEndTime(null);
             return;
         }
 
