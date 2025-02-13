@@ -83,11 +83,12 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
         Task oldTask = tasks.get(taskId);
-        if (task.getStartTime() != null && isTaskOverlapping(task)) {
-            throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
-        }
         if (oldTask.getStartTime() != null) {
             prioritizedTasks.remove(oldTask);
+        }
+        if (task.getStartTime() != null && isTaskOverlapping(task)) {
+            prioritizedTasks.add(oldTask);
+            throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
         }
         tasks.replace(taskId, task);
         if (task.getStartTime() != null) {
@@ -116,11 +117,12 @@ public class InMemoryTaskManager implements TaskManager {
         if (!subtasks.containsKey(subtaskId) || oldSubtask.getEpicId() != epicId) {
             return null;
         }
-        if (subtask.getStartTime() != null && isTaskOverlapping(subtask)) {
-            throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
-        }
         if (oldSubtask.getStartTime() != null) {
             prioritizedTasks.remove(oldSubtask);
+        }
+        if (subtask.getStartTime() != null && isTaskOverlapping(subtask)) {
+            prioritizedTasks.add(oldSubtask);
+            throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
         }
         Epic epic = epics.get(epicId);
         epic.removeSubtask(oldSubtask);
