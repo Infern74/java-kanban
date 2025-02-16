@@ -38,7 +38,7 @@ public class InMemoryTaskManager implements TaskManager {
     // create
     @Override
     public Task addTask(Task task) {
-        if (task.getStartTime() != null && isTaskOverlapping(task, task.getId())) {
+        if (task.getStartTime() != null && isTaskOverlapping(task)) {
             throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
         }
         task.setId(getNextId());
@@ -61,7 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (!epics.containsKey(subtask.getEpicId())) {
             return null;
         }
-        if (subtask.getStartTime() != null && isTaskOverlapping(subtask, subtask.getId())) {
+        if (subtask.getStartTime() != null && isTaskOverlapping(subtask)) {
             throw new IllegalStateException("Подзадача пересекается по времени с другой задачей.");
         }
         subtask.setId(getNextId());
@@ -86,7 +86,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (oldTask.getStartTime() != null) {
             prioritizedTasks.remove(oldTask);
         }
-        if (task.getStartTime() != null && isTaskOverlapping(task, taskId)) {
+        if (task.getStartTime() != null && isTaskOverlapping(task)) {
             prioritizedTasks.add(oldTask);
             throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
         }
@@ -120,7 +120,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (oldSubtask.getStartTime() != null) {
             prioritizedTasks.remove(oldSubtask);
         }
-        if (subtask.getStartTime() != null && isTaskOverlapping(subtask, subtaskId)) {
+        if (subtask.getStartTime() != null && isTaskOverlapping(subtask)) {
             prioritizedTasks.add(oldSubtask);
             throw new IllegalStateException("Задача пересекается по времени с другой задачей.");
         }
@@ -288,13 +288,11 @@ public class InMemoryTaskManager implements TaskManager {
         return !(end1.isBefore(start2)) && !(end2.isBefore(start1));
     }
 
-    public boolean isTaskOverlapping(Task newTask, int ignoreTaskId) {
+    private boolean isTaskOverlapping(Task newTask) {
         if (newTask.getStartTime() == null) {
             return false;
         }
-        return prioritizedTasks.stream()
-                .filter(task -> task.getId() != ignoreTaskId) // Игнорируем задачу с указанным ID
-                .anyMatch(existingTask -> isTasksOverlap(newTask, existingTask));
+        return prioritizedTasks.stream().anyMatch(existingTask -> isTasksOverlap(newTask, existingTask));
     }
 
     @Override
