@@ -288,6 +288,7 @@ public class InMemoryTaskManager implements TaskManager {
         return !(end1.isBefore(start2)) && !(end2.isBefore(start1));
     }
 
+    @Override
     public boolean isTaskOverlapping(Task newTask, int ignoreTaskId) {
         if (newTask.getStartTime() == null) {
             return false;

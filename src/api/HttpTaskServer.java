@@ -2,7 +2,7 @@ package api;
 
 import api.handlers.*;
 import com.sun.net.httpserver.HttpServer;
-import manager.InMemoryTaskManager;
+import manager.TaskManager;
 import manager.Managers;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class HttpTaskServer {
     public static String[] args;
 
     // Конструктор с возможностью передачи TaskManager
-    public HttpTaskServer(InMemoryTaskManager taskManager) throws IOException {
+    public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/tasks", new TasksHandler(taskManager));
         server.createContext("/subtasks", new SubtasksHandler(taskManager));
@@ -38,7 +38,7 @@ public class HttpTaskServer {
     // Метод main для запуска сервера с дефолтным менеджером
     public static void main(String[] args) throws IOException {
         HttpTaskServer.args = args;
-        InMemoryTaskManager taskManager = (InMemoryTaskManager) Managers.getDefault(); // Используем дефолтный менеджер
+        TaskManager taskManager = Managers.getDefault(); // Используем дефолтный менеджер
         HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
         httpTaskServer.start();
     }

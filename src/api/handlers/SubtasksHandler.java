@@ -5,17 +5,17 @@ import api.GsonFactory;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import manager.InMemoryTaskManager;
+import manager.TaskManager;
 import tasks.Subtask;
 
 import java.io.IOException;
 import java.util.List;
 
 public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
-    private final InMemoryTaskManager taskManager;
+    private final TaskManager taskManager;
     private final Gson gson;
 
-    public SubtasksHandler(InMemoryTaskManager taskManager) {
+    public SubtasksHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
         this.gson = GsonFactory.getGson();
     }
